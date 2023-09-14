@@ -1,11 +1,11 @@
-import { defineConfig, loadEnv } from 'vite';
-import path from 'path';
-import createVitePlugins from './vite/plugins';
+import { defineConfig, loadEnv } from 'vite'
+import path from 'path'
+import createVitePlugins from './vite/plugins'
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode, command }) => {
-  const env = loadEnv(mode, process.cwd());
-  const { VITE_APP_ENV } = env;
+  const env = loadEnv(mode, process.cwd())
+  const { VITE_APP_ENV } = env
   return {
     // 部署生产环境和开发环境下的URL。
     // 默认情况下，vite 会假设你的应用是被部署在一个域名的根路径上
@@ -25,15 +25,15 @@ export default defineConfig(({ mode, command }) => {
     },
     // vite 相关配置
     server: {
-      port: 9527,
+      port: 80,
       host: true,
-      open: false,
+      open: true,
       proxy: {
         // https://cn.vitejs.dev/config/#server-proxy
         '/dev-api': {
-          target: 'http://114.55.2.15:8081',
+          target: 'http://localhost:8080',
           changeOrigin: true,
-          rewrite: p => p.replace(/^\/dev-api/, '')
+          rewrite: (p) => p.replace(/^\/dev-api/, '')
         }
       }
     },
@@ -44,7 +44,7 @@ export default defineConfig(({ mode, command }) => {
           {
             postcssPlugin: 'internal:charset-removal',
             AtRule: {
-              charset: atRule => {
+              charset: (atRule) => {
                 if (atRule.name === 'charset') {
                   atRule.remove();
                 }
@@ -54,5 +54,5 @@ export default defineConfig(({ mode, command }) => {
         ]
       }
     }
-  };
-});
+  }
+})
